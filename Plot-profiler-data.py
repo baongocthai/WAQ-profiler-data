@@ -13,7 +13,8 @@ import matplotlib.pyplot as plt
 import os
 import glob
 
-directory = r'S:\01_PROJECTS\H2I-C2020-015_ERM_PV-Kranji\Working-Documents\Received data\10 PUB Data\07_Online WQ Data_Kranji 1_Jan 2018 to Dec 2019_for EDB'
+# Select working folder
+directory = r'S:\01_PROJECTS\H2I-C2020-015_ERM_PV-Kranji\Working-Documents\Received data\10 PUB Data\07_Online WQ Data_Kranji 1_Jan 2018 to Dec 2019_for EDB' 
 os.chdir(directory)
 
 #%% Main block: Extract results from interested stations
@@ -22,11 +23,12 @@ for i in range(len(list_file)):
     filename = list_file[i]
     data = pd.read_csv(filename,sep=',',index_col=0)
     data.index = pd.to_datetime(data.index, format='%d/%m/%Y %H:%M')
-    # data.columns = [0.5,1,1.5,2,4,6]    # Depth for Kranji-2
-    data.columns = [0.5,1,1.5,2,2.5,3,3.5,4]    # Depth for Kranji-1
+    # data.columns = [0.5,1,1.5,2,4,6]    # Depth for Kranji-2, depend on locations
+    data.columns = [0.5,1,1.5,2,2.5,3,3.5,4]    # Depth for Kranji-1, depend on locations
     data_selected = data[data.index.year == 2019]   #Available for 2 years: 2018-2019
-    data_selected_hourly = data_selected.resample('H').mean()
+    data_selected_hourly = data_selected.resample('H').mean() # Average to hourly
     
+    #Plot
     x = data_selected_hourly.index
     y = data.columns
     px_values = data_selected_hourly.transpose()
